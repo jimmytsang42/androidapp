@@ -6,7 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,7 +30,7 @@ fun FavoritesScreen(jokeState: JokeState) {
                 Text(text = "No favorites yet.")
             }
         } else {
-            items(jokeState.favorites) { joke ->
+            itemsIndexed(jokeState.favorites) { index, joke ->
                 // Box for each favorite joke to make it visually distinct
                 Box(
                     modifier = Modifier
@@ -34,10 +39,28 @@ fun FavoritesScreen(jokeState: JokeState) {
                         .padding(16.dp)
                 ) {
                     Column {
-                        Text(text = "Favorited Joke: ${joke.joke.orEmpty()}", fontWeight = FontWeight.Bold)
+                        // Dynamically label each favorite with an index
+                        Text(text = "Favorited Joke ${index + 1}:", fontWeight = FontWeight.Bold)
+
+                        // Display the joke based on its type
                         if (joke.type == "twopart") {
-                            Text(text = "Setup: ${joke.setup.orEmpty()}")
-                            Text(text = "Delivery: ${joke.delivery.orEmpty()}")
+                            // For two-part jokes, don't label setup and delivery
+                            Text(text = joke.setup.orEmpty())
+                            Text(text = joke.delivery.orEmpty())
+                        } else {
+                            // For one-part jokes, don't bold the text
+                            Text(text = joke.joke.orEmpty(), fontWeight = FontWeight.Normal)
+                        }
+
+                        // Remove button for the favorites list
+                        IconButton(onClick = {
+                            jokeState.removeFavorite(joke)
+                        }) {
+                            Icon(
+                                Icons.Filled.Delete,
+                                contentDescription = "Remove from favorites",
+                                tint = Color.Red
+                            )
                         }
                     }
                 }

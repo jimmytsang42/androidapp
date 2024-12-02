@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jimmytsangminiapp.ui.state.JokeState
@@ -46,7 +47,7 @@ fun RandomJokeScreen(jokeState: JokeState, navController: NavController) {
                     Icon(
                         Icons.Filled.Favorite,
                         contentDescription = "Favorite",
-                        tint = if (jokeState.isFavorite(it)) androidx.compose.ui.graphics.Color.Red else androidx.compose.ui.graphics.Color.Gray
+                        tint = if (jokeState.isFavorite(it)) Color.Red else Color.Gray
                     )
                 }
 

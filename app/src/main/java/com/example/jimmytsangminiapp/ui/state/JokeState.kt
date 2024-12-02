@@ -30,4 +30,9 @@ class JokeState(private val jokeRepository: JokeRepository) {
     fun isFavorite(joke: JokeResponse): Boolean {
         return favorites.contains(joke)
     }
+
+    // Remove joke from favorites
+    fun removeFavorite(joke: JokeResponse) {
+        favorites.remove(joke)  // Remove the joke from the favorites list
+    }
 }
