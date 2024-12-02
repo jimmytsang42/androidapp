@@ -8,7 +8,6 @@ import io.ktor.client.request.get
 
 class JokeRepository(private val client: HttpClient) {
     suspend fun getJokes(category: String? = null): JokeResponse {
-        // Use the format function to get the correct URL
         val url = EndPoints.JOKE_API.format(category)
 
         val response = client.get(url)

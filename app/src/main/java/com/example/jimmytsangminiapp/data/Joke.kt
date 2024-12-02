@@ -1,7 +1,5 @@
 package com.example.jimmytsangminiapp.data
 
-import com.google.gson.annotations.SerializedName
-
 data class JokeResponse(
     val error: Boolean,
     val category: String,

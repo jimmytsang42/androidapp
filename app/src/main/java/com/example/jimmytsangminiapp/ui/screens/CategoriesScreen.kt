@@ -1,4 +1,4 @@
-package com.example.jimmytsangminiapp.ui
+package com.example.jimmytsangminiapp.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,9 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ButtonDefaults.buttonColors
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,7 +48,7 @@ fun CategoriesScreen(jokeState: JokeState) {
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
-                // Button with orange color
+
                 Button(
                     onClick = {
                         coroutineScope.launch {
@@ -59,13 +57,12 @@ fun CategoriesScreen(jokeState: JokeState) {
                         }
                     },
                     colors = buttonColors(
-                        Color(0xFFde5100) // Orange color
+                        Color(0xFFde5100)
                     )
                 ) {
                     Text(text = category)
                 }
 
-                // Display the joke text in a grey box
                 jokesByCategory[category]?.value?.let { joke ->
                     Box(
                         modifier = Modifier
@@ -81,7 +78,6 @@ fun CategoriesScreen(jokeState: JokeState) {
                                 Text(text = joke.joke.orEmpty())
                             }
 
-                            // Favorite button logic
                             IconButton(onClick = { jokeState.toggleFavorite(joke) }) {
                                 Icon(
                                     Icons.Filled.Favorite,
@@ -96,7 +92,3 @@ fun CategoriesScreen(jokeState: JokeState) {
         }
     }
 }
-
-
-
-

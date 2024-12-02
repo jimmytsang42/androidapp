@@ -1,4 +1,4 @@
-package com.example.jimmytsangminiapp.ui
+package com.example.jimmytsangminiapp.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +22,7 @@ fun TopBar() {
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary // Grey background for TopAppBar
+            containerColor = MaterialTheme.colorScheme.primary
         )
     )
 }
