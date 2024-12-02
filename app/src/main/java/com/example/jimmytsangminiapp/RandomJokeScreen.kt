@@ -13,6 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -69,11 +70,16 @@ fun RandomJokeScreen(jokeState: JokeState, navController: NavController) {
                     }
 
                     // "Next Joke" button
-                    Button(onClick = {
-                        coroutineScope.launch {
-                            jokeState.getJoke()
-                        }
-                    }) {
+                    Button(
+                        onClick = {
+                            coroutineScope.launch {
+                                jokeState.getJoke()
+                            }
+                        },
+                        colors = buttonColors(
+                            Color(0xFFde5100) // Orange color
+                        )
+                    ) {
                         Text("Next Joke")
                     }
                 }

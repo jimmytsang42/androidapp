@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,47 +41,54 @@ fun CategoriesScreen(jokeState: JokeState) {
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxWidth() // Ensure LazyColumn spans full width
+            .fillMaxWidth()
             .padding(16.dp),
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally // Center items horizontally
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
         items(categories) { category ->
             Column(
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
-                // Center the button
-                Button(onClick = {
-                    coroutineScope.launch {
-                        jokeState.getJoke(category)
-                        jokesByCategory[category]?.value = jokeState.joke.value
-                    }
-                }) {
+                // Button with orange color
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            jokeState.getJoke(category)
+                            jokesByCategory[category]?.value = jokeState.joke.value
+                        }
+                    },
+                    colors = buttonColors(
+                        Color(0xFFde5100) // Orange color
+                    )
+                ) {
                     Text(text = category)
                 }
 
-                // Display the joke text without altering alignment
+                // Display the joke text in a grey box
                 jokesByCategory[category]?.value?.let { joke ->
-                    Column(
+                    Box(
                         modifier = Modifier
-                            .padding(top = 8.dp),
-                        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                            .padding(top = 8.dp)
+                            .background(Color.Gray.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp))
+                            .padding(16.dp)
                     ) {
-                        Text(text = "Category: ${joke.category}")
-                        if (joke.type == "twopart") {
-                            Text(text = joke.setup.orEmpty())
-                            Text(text = joke.delivery.orEmpty())
-                        } else {
-                            Text(text = joke.joke.orEmpty())
-                        }
+                        Column {
+                            if (joke.type == "twopart") {
+                                Text(text = joke.setup.orEmpty())
+                                Text(text = joke.delivery.orEmpty())
+                            } else {
+                                Text(text = joke.joke.orEmpty())
+                            }
 
-                        // Favorite button logic
-                        IconButton(onClick = { jokeState.toggleFavorite(joke) }) {
-                            Icon(
-                                Icons.Filled.Favorite,
-                                contentDescription = "Favorite",
-                                tint = if (jokeState.isFavorite(joke)) Color.Red else Color.Gray
-                            )
+                            // Favorite button logic
+                            IconButton(onClick = { jokeState.toggleFavorite(joke) }) {
+                                Icon(
+                                    Icons.Filled.Favorite,
+                                    contentDescription = "Favorite",
+                                    tint = if (jokeState.isFavorite(joke)) Color.Red else Color.Gray
+                                )
+                            }
                         }
                     }
                 }

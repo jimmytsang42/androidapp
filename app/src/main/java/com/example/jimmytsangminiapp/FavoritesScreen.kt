@@ -45,10 +45,12 @@ fun FavoritesScreen(jokeState: JokeState) {
                         // Display the joke based on its type
                         if (joke.type == "twopart") {
                             // For two-part jokes, don't label setup and delivery
+                            Text(text = "Category: ${joke.category}")
                             Text(text = joke.setup.orEmpty())
                             Text(text = joke.delivery.orEmpty())
                         } else {
                             // For one-part jokes, don't bold the text
+                            Text(text = "Category: ${joke.category}")
                             Text(text = joke.joke.orEmpty(), fontWeight = FontWeight.Normal)
                         }
 
