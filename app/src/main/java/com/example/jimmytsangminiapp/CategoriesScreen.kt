@@ -2,6 +2,8 @@ package com.example.jimmytsangminiapp.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,18 +28,15 @@ import kotlinx.coroutines.launch
 fun CategoriesScreen(jokeState: JokeState) {
     val categories = listOf("Programming", "Miscellaneous", "Pun", "Spooky", "Christmas")
 
-    // Initialize the jokes map with empty states
     val jokesByCategory = remember { mutableMapOf<String, MutableState<JokeResponse?>>().apply {
-        categories.forEach { category ->
-            this[category] = mutableStateOf(null)
-        }
+        categories.forEach { category -> this[category] = mutableStateOf(null) }
     }}
-    val coroutineScope = rememberCoroutineScope()  // Remembering the coroutine scope
+    val coroutineScope = rememberCoroutineScope()
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        categories.forEach { category ->
+    LazyColumn(modifier = Modifier.padding(16.dp)) {
+        items(categories) { category ->
             Button(onClick = {
-                // Launch coroutine to fetch joke for the selected category
+                // Fetch joke for the selected category
                 coroutineScope.launch {
                     jokeState.getJoke(category)
                     jokesByCategory[category]?.value = jokeState.joke.value
@@ -46,7 +45,7 @@ fun CategoriesScreen(jokeState: JokeState) {
                 Text(text = category)
             }
 
-            // Display joke for the category if available
+            // Display joke for the category
             jokesByCategory[category]?.value?.let { joke ->
                 Column(modifier = Modifier.padding(top = 8.dp)) {
                     Text(text = "Category: ${joke.category}")
@@ -57,7 +56,7 @@ fun CategoriesScreen(jokeState: JokeState) {
                         Text(text = joke.joke.orEmpty())
                     }
 
-                    // Favorite icon
+                    // Favorite button logic
                     IconButton(onClick = { jokeState.toggleFavorite(joke) }) {
                         Icon(
                             Icons.Filled.Favorite,
@@ -70,4 +69,5 @@ fun CategoriesScreen(jokeState: JokeState) {
         }
     }
 }
+
 
