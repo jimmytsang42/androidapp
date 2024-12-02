@@ -1,9 +1,13 @@
 package com.example.jimmytsangminiapp.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,47 +31,64 @@ import kotlinx.coroutines.launch
 @Composable
 fun CategoriesScreen(jokeState: JokeState) {
     val categories = listOf("Programming", "Miscellaneous", "Pun", "Spooky", "Christmas")
-
-    val jokesByCategory = remember { mutableMapOf<String, MutableState<JokeResponse?>>().apply {
-        categories.forEach { category -> this[category] = mutableStateOf(null) }
-    }}
+    val jokesByCategory = remember {
+        mutableMapOf<String, MutableState<JokeResponse?>>().apply {
+            categories.forEach { category -> this[category] = mutableStateOf(null) }
+        }
+    }
     val coroutineScope = rememberCoroutineScope()
 
-    LazyColumn(modifier = Modifier.padding(16.dp)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth() // Ensure LazyColumn spans full width
+            .padding(16.dp),
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally // Center items horizontally
+    ) {
         items(categories) { category ->
-            Button(onClick = {
-                // Fetch joke for the selected category
-                coroutineScope.launch {
-                    jokeState.getJoke(category)
-                    jokesByCategory[category]?.value = jokeState.joke.value
-                }
-            }) {
-                Text(text = category)
-            }
-
-            // Display joke for the category
-            jokesByCategory[category]?.value?.let { joke ->
-                Column(modifier = Modifier.padding(top = 8.dp)) {
-                    Text(text = "Category: ${joke.category}")
-                    if (joke.type == "twopart") {
-                        Text(text = joke.setup.orEmpty())
-                        Text(text = joke.delivery.orEmpty())
-                    } else {
-                        Text(text = joke.joke.orEmpty())
+            Column(
+                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                modifier = Modifier.padding(vertical = 16.dp)
+            ) {
+                // Center the button
+                Button(onClick = {
+                    coroutineScope.launch {
+                        jokeState.getJoke(category)
+                        jokesByCategory[category]?.value = jokeState.joke.value
                     }
+                }) {
+                    Text(text = category)
+                }
 
-                    // Favorite button logic
-                    IconButton(onClick = { jokeState.toggleFavorite(joke) }) {
-                        Icon(
-                            Icons.Filled.Favorite,
-                            contentDescription = "Favorite",
-                            tint = if (jokeState.isFavorite(joke)) Color.Red else Color.Gray
-                        )
+                // Display the joke text without altering alignment
+                jokesByCategory[category]?.value?.let { joke ->
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 8.dp),
+                        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Category: ${joke.category}")
+                        if (joke.type == "twopart") {
+                            Text(text = joke.setup.orEmpty())
+                            Text(text = joke.delivery.orEmpty())
+                        } else {
+                            Text(text = joke.joke.orEmpty())
+                        }
+
+                        // Favorite button logic
+                        IconButton(onClick = { jokeState.toggleFavorite(joke) }) {
+                            Icon(
+                                Icons.Filled.Favorite,
+                                contentDescription = "Favorite",
+                                tint = if (jokeState.isFavorite(joke)) Color.Red else Color.Gray
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
+
+
 
 
