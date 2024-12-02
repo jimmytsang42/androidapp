@@ -23,6 +23,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 import com.example.jimmytsangminiapp.data.JokeResponse
 import com.example.jimmytsangminiapp.ui.state.JokeState
 import kotlinx.coroutines.launch
@@ -60,7 +62,7 @@ fun CategoriesScreen(jokeState: JokeState) {
                         Color(0xFFde5100)
                     )
                 ) {
-                    Text(text = category)
+                    Text(text = category, style = TextStyle(fontSize = 22.sp))
                 }
 
                 jokesByCategory[category]?.value?.let { joke ->

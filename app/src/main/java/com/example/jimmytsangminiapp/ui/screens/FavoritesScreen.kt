@@ -3,6 +3,8 @@ package com.example.jimmytsangminiapp.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -39,10 +41,14 @@ fun FavoritesScreen(jokeState: JokeState) {
 
                         if (joke.type == "twopart") {
                             Text(text = "Category: ${joke.category}")
+                            Spacer(modifier = Modifier.height(16.dp)) // Adjust this value for more or less spacing
+
                             Text(text = joke.setup.orEmpty())
                             Text(text = joke.delivery.orEmpty())
                         } else {
                             Text(text = "Category: ${joke.category}")
+                            Spacer(modifier = Modifier.height(16.dp)) // Adjust this value for more or less spacing
+
                             Text(text = joke.joke.orEmpty(), fontWeight = FontWeight.Normal)
                         }
 
